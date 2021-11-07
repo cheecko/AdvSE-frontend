@@ -23,12 +23,7 @@ const Header = () => {
       <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
         <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ flexGrow: 1 }} />
-          {/* <CardMedia
-            component='img'
-            height='140'
-            image='/static/images/cards/contemplative-reptile.jpg'
-            alt='green iguana'
-          /> */}
+          {/* add our login here here */}
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Badge badgeContent={4} color='error'>
@@ -47,6 +42,16 @@ const Header = () => {
               </Typography>
             </Box>
           </Box>
+        </Toolbar>
+      </AppBar>
+      <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
+        <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
+          {/* add category list here */}
+        </Toolbar>
+      </AppBar>
+      <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
+        <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
+          {/* add search here */}
         </Toolbar>
       </AppBar>
     </Box>
