@@ -1,5 +1,5 @@
 import { Box, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
-import { IoChevronDown } from "react-icons/io5"
+import { IoChevronDown } from 'react-icons/io5'
 
 const SimpleAccordion = ({ summary, detail }) => {
 

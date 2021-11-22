@@ -134,10 +134,10 @@ const ItemDetail = () => {
         </Grid>
         <Grid container spacing={1} sx={{ marginBottom: 2 }}>
           <Grid item xs={12} sm={6}>
-            <SimpleAccordion summary='Produkdetails' detail={item?.description} sx={{flexGrow: 0}} />
+            <SimpleAccordion summary='Produkdetails' detail={item?.description} sx={{ flexGrow: 0 }} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <SimpleAccordion summary='Anwendung' detail={item?.instruction} sx={{flexGrow: 1}} />
+            <SimpleAccordion summary='Anwendung' detail={item?.instruction} sx={{ flexGrow: 1 }} />
           </Grid>
         </Grid>
       </Container>

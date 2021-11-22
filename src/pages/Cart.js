@@ -131,7 +131,7 @@ const Cart = () => {
             </Box>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box sx={{display: 'flex', justifyContent: 'space-between', marginBottom: 1}}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 1 }}>
               <Typography variant='subtitle1'>
                 Gesamtpreis:
               </Typography>
@@ -139,8 +139,8 @@ const Cart = () => {
                 {cartInfo?.price} €
               </Typography>
             </Box>
-            <Box sx={{marginBottom: 1}}>
-              <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{ marginBottom: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography variant='subtitle1'>
                   Versandkosten:
                 </Typography>
@@ -154,8 +154,8 @@ const Cart = () => {
                 </Typography>
               }
             </Box>
-            <Box sx={{marginBottom: 1}}>
-              <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{ marginBottom: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography variant='subtitle1' sx={{ fontWeight: 600 }}>
                   Gesamtsumme:
                 </Typography>
@@ -167,7 +167,7 @@ const Cart = () => {
                 inkl. Mwst.
               </Typography>
             </Box>
-            <Link to={{ pathname: `/` }} style={{ textDecoration: 'unset' }} >
+            <Link to={{ pathname: `/checkout` }} style={{ textDecoration: 'unset' }} >
               <Button variant='contained' fullWidth sx={{ fontWeight: 600, textTransform: 'capitalize', color: '#FFFFFF', backgroundColor: '#000000', '&:hover': {color: '#FFFFFF', backgroundColor: '#212121'} }}>
                 Zur Kasse
               </Button>
