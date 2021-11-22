@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react'
-import { Container, Box, Grid, Typography, Card, CardActionArea, CardMedia, CardContent } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { Container, Box, Grid, Typography, FormControl, Select, MenuItem } from '@mui/material'
 import axios from 'axios'
 import Header from './../components/Header'
-import SortSelect from './../components/SortSelect'
 import ProductCard from './../components/ProductCard'
 
 const Home = () => {
   const [items, setItems] = useState([])
-  const [sort, setSort] = useState('')
+  const [sort, setSort] = useState('id asc')
 
   const handleChangeSort = (event) => {
     setSort(event.target.value);
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/v1/items/').then(response => setItems(response.data))
-  }, [])
+    const params = { sort: sort }
+    axios.get('http://localhost:5000/api/v1/items/', { params: params }).then(response => setItems(response.data))
+  }, [sort])
 
   console.log(items)
 
@@ -28,13 +29,29 @@ const Home = () => {
             Unsere Empfehlungen
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 1 }}>
-          <SortSelect value={sort} onChange={handleChangeSort} />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 1, gap: 2 }}>
+          <Typography variant='h6'>
+            Sortieren nach
+          </Typography>
+          <FormControl variant='standard' sx={{ minWidth: 120 }}>
+            <Select
+              value={sort}
+              onChange={handleChangeSort}
+            >
+              <MenuItem value='id asc'>Id aufsteigend</MenuItem>
+              <MenuItem value='name asc'>Name aufsteigend</MenuItem>
+              <MenuItem value='name desc'>Name absteigend</MenuItem>
+              <MenuItem value='price asc'>Preis aufsteigend</MenuItem>
+              <MenuItem value='price desc'>Preis absteigend</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
         <Grid container spacing={1}>
           {items.map((item, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
-              <ProductCard item={item} />
+              <Link to={{ pathname: `/items/${item.id}` }} style={{ textDecoration: 'unset' }} >
+                <ProductCard item={item} />
+              </Link>
             </Grid>
           ))}
         </Grid>

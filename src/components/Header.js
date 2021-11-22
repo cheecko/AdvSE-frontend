@@ -1,7 +1,12 @@
-import { AppBar, Toolbar, Box, Typography, CardMedia, Badge } from '@mui/material';
+import { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { AppBar, Toolbar, Box, Typography, Badge } from '@mui/material'
+import { GlobalContext } from './../contexts/GlobalContext'
 import { WishlistIcon, CartIcon } from './../components/SvgIcon'
 
 const Header = () => {
+  const { state } = useContext(GlobalContext)
+
   return (
     <Box>
       <AppBar position='static' sx={{ backgroundColor: '#F5F5F5', color: 'black', boxShadow: 'none' }}>
@@ -24,23 +29,27 @@ const Header = () => {
         <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ flexGrow: 1 }} />
           {/* add our login here here */}
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Badge badgeContent={4} color='error'>
-                <WishlistIcon />
-              </Badge>
-              <Typography variant='caption'>
-                Wunschartikel
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Badge badgeContent={4} color='error'>
-                <CartIcon />
-              </Badge>
-              <Typography variant='caption'>
-                Warenkorb
-              </Typography>
-            </Box>
+          <Box sx={{ display: 'flex', gap: 2, paddingTop: 1 }}>
+            <Link to={{ pathname: '/' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                <Badge badgeContent={state.wishlists.length} color='error'>
+                  <WishlistIcon />
+                </Badge>
+                <Typography variant='caption'>
+                  Wunschartikel
+                </Typography>
+              </Box>
+            </Link>
+            <Link to={{ pathname: '/cart' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                <Badge badgeContent={state.carts.reduce((a, b) => { return {quantity: a.quantity + b.quantity} }, {quantity: 0}).quantity} color='error'>
+                  <CartIcon />
+                </Badge>
+                <Typography variant='caption'>
+                  Warenkorb
+                </Typography>
+              </Box>
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>

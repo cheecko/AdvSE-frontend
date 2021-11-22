@@ -2,7 +2,7 @@ import { SvgIcon } from '@mui/material';
 
 const WishlistIcon = (props) => {
   return (
-    <SvgIcon {...props}>
+    <SvgIcon {...props} viewBox='0 0 22 22'>
       <path fill="none" stroke="#000000" d="M11 3.12138686s5.3208567-5.38941603 9.2647991 1.01212628C24.2087415 10.5350555 11 20 11 20S-2.2087415 10.5350555 1.7352009 4.13351314C5.6791433-2.26802917 11 3.12138686 11 3.12138686z"></path>
     </SvgIcon>
   )

@@ -1,12 +1,22 @@
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { GlobalContextProvider } from './contexts/GlobalContext'
 import Home from './pages/Home'
+import ItemDetail from './pages/ItemDetail'
+import Cart from './pages/Cart'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Route path='/' component={Home} exact />
-    </BrowserRouter>
+    <GlobalContextProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' component={Home} exact />
+          <Route path='/home' component={Home} exact />
+          <Route path='/items/:id' component={ItemDetail} />
+          <Route path='/cart' component={Cart} />
+        </Switch>
+      </BrowserRouter>
+    </GlobalContextProvider>
   );
 }
 
