@@ -1,14 +1,14 @@
-import { useState, useEffect, useContext, Fragment } from 'react'
+import { useState, useContext, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Container, Box, Grid, Typography, CardMedia, FormControl, Select, MenuItem, Divider, Button } from '@mui/material'
+import { FREE_DELIVERY_SUBTOTAL_PRICE } from './../utils/constants'
+import { round2Decimal } from './../utils/functions'
 import { GlobalContext } from './../contexts/GlobalContext'
 import Header from './../components/Header'
 import Toast from './../components/Toast'
 
 const Cart = () => {
   const { state, dispatch } = useContext(GlobalContext)
-  const freeDeliveryMinPrice = 19
-  const [cartInfo, setCartInfo] = useState()
   const [toastType, setToastType] = useState('success')
   const [toastMessage, setToastMessage] = useState('')
 
@@ -24,17 +24,17 @@ const Cart = () => {
   const handleRemoveFromCart = (index) => {
     dispatch({
       type: 'saveCarts',
-      payload: state.carts.filter((item, itemIndex) => itemIndex !== index)
+      payload: state.carts.items.filter((item, itemIndex) => itemIndex !== index)
     })
     setToastType('success')
     setToastMessage('Artikel wurde vom Warenkorb gelöscht')
   }
 
   const handleChangeQuantity = (event, index) => {
-    state.carts[index].quantity = event.target.value
+    state.carts.items[index].quantity = event.target.value
     dispatch({
       type: 'saveCarts',
-      payload: state.carts
+      payload: state.carts.items
     })
     setToastType('success')
     setToastMessage('Artikel wurde in den Warenkorb gelegt')
@@ -43,10 +43,6 @@ const Cart = () => {
   const handleToastClose = () => {
     setToastMessage('')
   }
-
-  useEffect(() => {
-    setCartInfo(state.carts.reduce((a, b) => { return {quantity: a.quantity + b.quantity, price: Math.round((a.price + b.variant.price * b.quantity) * 100) / 100 } }, {quantity: 0, price: 0}))
-  }, [state])
 
   console.log(state)
 
@@ -61,14 +57,14 @@ const Cart = () => {
                 Warenkorb
               </Typography>
               <Typography variant='subtitle1'>
-                {cartInfo?.quantity} Produkte
+                {state.carts.totalQuantity} Produkte
               </Typography>
             </Box>
             <Typography variant='subtitle2' sx={{ marginBottom: 1 }}>
               Artikel im Warenkorb werden nicht reserviert.
             </Typography>
             <Box sx={{ marginBottom: 1 }}>
-              {state.carts.map((item, index) => (
+              {state.carts.items.map((item, index) => (
                 <Fragment key={index}>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={3}>
@@ -136,7 +132,7 @@ const Cart = () => {
                 Gesamtpreis:
               </Typography>
               <Typography variant='subtitle1'>
-                {cartInfo?.price} €
+                {state.carts.subtotal} €
               </Typography>
             </Box>
             <Box sx={{ marginBottom: 1 }}>
@@ -144,13 +140,13 @@ const Cart = () => {
                 <Typography variant='subtitle1'>
                   Versandkosten:
                 </Typography>
-                <Typography variant='subtitle1' color={cartInfo?.price > freeDeliveryMinPrice ? 'inherit' : 'success.main'}>
-                  {cartInfo?.price > freeDeliveryMinPrice ? 0.00 : 3.50} €
+                <Typography variant='subtitle1' color={state.carts.shippingCost > 0 ? 'inherit' : 'success.main'}>
+                  {state.carts.shippingCost > 0 ? state.carts.shippingCost : 0.00} €
                 </Typography>
               </Box>
-              {cartInfo?.price > freeDeliveryMinPrice &&
+              {state.carts.shippingCost > 0 &&
                 <Typography variant='subtitle2' color='success.main'>
-                  Nur noch {cartInfo?.price - freeDeliveryMinPrice} € bis zum Gratisversand!
+                  Nur noch {round2Decimal(FREE_DELIVERY_SUBTOTAL_PRICE - state.carts.shippingCost)} € bis zum Gratisversand!
                 </Typography>
               }
             </Box>
@@ -160,7 +156,7 @@ const Cart = () => {
                   Gesamtsumme:
                 </Typography>
                 <Typography variant='subtitle1' sx={{ fontWeight: 600 }}>
-                  {cartInfo?.price} €
+                  {state.carts.total} €
                 </Typography>
               </Box>
               <Typography variant='subtitle2' color='text.secondary' sx={{ fontWeight: 600 }}>

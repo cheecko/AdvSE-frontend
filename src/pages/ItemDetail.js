@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Container, Card, CardMedia, Box, Grid, Typography, FormControl, FormControlLabel, RadioGroup, Radio, Button  } from '@mui/material'
 import axios from 'axios'
+import { MAX_ORDER_QUANTITY_PER_ITEM } from './../utils/constants'
 import { GlobalContext } from './../contexts/GlobalContext'
 import { WishlistIcon } from './../components/SvgIcon'
 import Header from './../components/Header'
@@ -11,7 +12,6 @@ import Toast from './../components/Toast'
 const ItemDetail = () => {
   const { id } = useParams()
   const { state, dispatch } = useContext(GlobalContext)
-  const maxOrderQuantityPerItem = 3
   const [item, setItem] = useState()
   const [variant, setVariant] = useState('')
   const [toastType, setToastType] = useState('success')
@@ -27,16 +27,16 @@ const ItemDetail = () => {
   }
 
   const handleAddToCart = () => {
-    const itemInCart = state.carts.find(cart => cart.id === item.id && cart.variant.size === variant)
-    if(itemInCart?.quantity >= maxOrderQuantityPerItem) {
+    const itemInCart = state.carts.items.find(cart => cart.id === item.id && cart.variant.size === variant)
+    if(itemInCart?.quantity >= MAX_ORDER_QUANTITY_PER_ITEM) {
       setToastType('error')
       setToastMessage('Die Höchstbestellmenge beträgt 3')
     }else{
       dispatch({
         type: 'saveCarts',
         payload: itemInCart
-          ? state.carts.map(cart => cart.id === item.id && cart.variant.size === variant ? {...cart, quantity: cart.quantity + 1} : cart)
-          : [...state.carts, {id: item.id, brand_name: item.brand_name, name: item.name, type_name: item.type_name, image: item.image, variant: item.variants.find(itemVariant => itemVariant.size === variant), quantity: 1}]
+          ? state.carts.items.map(cart => cart.id === item.id && cart.variant.size === variant ? {...cart, quantity: cart.quantity + 1} : cart)
+          : [...state.carts.items, {id: item.id, brand_name: item.brand_name, name: item.name, type_name: item.type_name, image: item.image, variant: item.variants.find(itemVariant => itemVariant.size === variant), quantity: 1}]
       })
       setToastType('success')
       setToastMessage('Artikel wurde in den Warenkorb gelegt')
@@ -57,6 +57,8 @@ const ItemDetail = () => {
       setVariant(response.data.variants[0]?.size ?? '')
     })
   }, [id])
+
+  console.log(state)
 
   return (
     <>
@@ -125,10 +127,14 @@ const ItemDetail = () => {
               </RadioGroup>
             </FormControl>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Button variant='outlined' onClick={handleAddToWishlist}>
-                <WishlistIcon />
-              </Button>
-              <Button variant='contained' sx={{ flexGrow: 1 }} onClick={handleAddToCart}>In den Warenkorb</Button>
+              <Card raised sx={{ flexShrink: 1 }}>
+                <Button variant='outlined' onClick={handleAddToWishlist} sx={{ borderColor: '#000000' }}>
+                  <WishlistIcon />
+                </Button>
+              </Card>
+              <Card raised sx={{ flexGrow: 1 }} >
+                <Button variant='contained' onClick={handleAddToCart} sx={{ fontWeight: 600, textTransform: 'capitalize', width: '100%', color: '#FFFFFF', backgroundColor: '#000000', '&:hover': {color: '#FFFFFF', backgroundColor: '#212121'} }}>In den Warenkorb</Button>
+              </Card>
             </Box>
           </Grid>
         </Grid>

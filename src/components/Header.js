@@ -42,7 +42,7 @@ const Header = () => {
             </Link>
             <Link to={{ pathname: '/cart' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
-                <Badge badgeContent={state.carts.reduce((a, b) => { return {quantity: a.quantity + b.quantity} }, {quantity: 0}).quantity} color='error'>
+                <Badge badgeContent={state.carts.totalQuantity} color='error'>
                   <CartIcon />
                 </Badge>
                 <Typography variant='caption'>
