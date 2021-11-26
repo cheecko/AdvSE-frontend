@@ -146,7 +146,7 @@ const Cart = () => {
               </Box>
               {state.carts.shippingCost > 0 &&
                 <Typography variant='subtitle2' color='success.main'>
-                  Nur noch {round2Decimal(FREE_DELIVERY_SUBTOTAL_PRICE - state.carts.shippingCost)} € bis zum Gratisversand!
+                  Nur noch {round2Decimal(FREE_DELIVERY_SUBTOTAL_PRICE - state.carts.subtotal)} € bis zum Gratisversand!
                 </Typography>
               }
             </Box>
