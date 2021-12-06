@@ -1,16 +1,24 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react'
 import { Container, Box, Grid, Typography, FormControl, Select, MenuItem } from '@mui/material'
 import axios from 'axios'
+import { GlobalContext } from './../contexts/GlobalContext'
 import Header from './../components/Header'
 import ProductCard from './../components/ProductCard'
 
 const Home = () => {
+  const { state, dispatch } = useContext(GlobalContext)
   const [items, setItems] = useState([])
   const [sort, setSort] = useState('id asc')
 
+  const handleAddToWishlist = (id) => {
+    dispatch({
+      type: 'saveWishlists',
+      payload: state.wishlists.includes(id) ? state.wishlists.filter(wishlist => wishlist !== id) : [...state.wishlists, id]
+    })
+  }
+
   const handleChangeSort = (event) => {
-    setSort(event.target.value);
+    setSort(event.target.value)
   }
 
   useEffect(() => {
@@ -49,9 +57,7 @@ const Home = () => {
         <Grid container spacing={1}>
           {items.map((item, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
-              <Link to={{ pathname: `/items/${item.id}` }} style={{ textDecoration: 'unset' }} >
-                <ProductCard item={item} />
-              </Link>
+              <ProductCard item={item} variantWishlist={state.wishlists.includes(item?.id) ? 'filled' : 'outlined'} onClickWishlistIcon={() => handleAddToWishlist(item.id)} />
             </Grid>
           ))}
         </Grid>

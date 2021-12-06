@@ -9,7 +9,6 @@ import Toast from './../components/Toast'
 
 const Cart = () => {
   const { state, dispatch } = useContext(GlobalContext)
-  const [toastType, setToastType] = useState('success')
   const [toastMessage, setToastMessage] = useState('')
 
   const handleAddToWishlist = (itemId) => {
@@ -17,8 +16,7 @@ const Cart = () => {
       type: 'saveWishlists',
       payload: state.wishlists.includes(itemId) ? state.wishlists : [...state.wishlists, itemId]
     })
-    setToastType('success')
-    setToastMessage('Artikel wurde in den Wunschliste gelegt')
+    setToastMessage('Das Produkt wurde deinem Wunschzettel hinzugefügt')
   }
 
   const handleRemoveFromCart = (index) => {
@@ -26,8 +24,7 @@ const Cart = () => {
       type: 'saveCarts',
       payload: state.carts.items.filter((item, itemIndex) => itemIndex !== index)
     })
-    setToastType('success')
-    setToastMessage('Artikel wurde vom Warenkorb gelöscht')
+    setToastMessage('Das gewünschte Produkt wurde aus dem Warenkorb entfernt.')
   }
 
   const handleChangeQuantity = (event, index) => {
@@ -36,8 +33,6 @@ const Cart = () => {
       type: 'saveCarts',
       payload: state.carts.items
     })
-    setToastType('success')
-    setToastMessage('Artikel wurde in den Warenkorb gelegt')
   }
 
   const handleToastClose = () => {
@@ -90,7 +85,6 @@ const Cart = () => {
                             value={item.quantity}
                             onChange={(e) => handleChangeQuantity(e, index)}
                           >
-                            <MenuItem value={0}>0</MenuItem>
                             <MenuItem value={1}>1</MenuItem>
                             <MenuItem value={2}>2</MenuItem>
                             <MenuItem value={3}>3</MenuItem>
@@ -171,7 +165,7 @@ const Cart = () => {
           </Grid>
         </Grid>
       </Container>
-      <Toast message={toastMessage} type={toastType} handleToastClose={handleToastClose} />
+      <Toast message={toastMessage} type='success' handleToastClose={handleToastClose} />
     </>
   )
 }

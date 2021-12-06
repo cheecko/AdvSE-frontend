@@ -20,10 +20,8 @@ const ItemDetail = () => {
   const handleAddToWishlist = () => {
     dispatch({
       type: 'saveWishlists',
-      payload: state.wishlists.includes(item.id) ? state.wishlists : [...state.wishlists, item.id]
+      payload: state.wishlists.includes(item.id) ? state.wishlists.filter(wishlist => wishlist !== item.id) : [...state.wishlists, item.id]
     })
-    setToastType('success')
-    setToastMessage('Artikel wurde in den Wunschliste gelegt')
   }
 
   const handleAddToCart = () => {
@@ -44,7 +42,7 @@ const ItemDetail = () => {
   }
 
   const handleChangeVariant = (event) => {
-    setVariant(parseInt(event.target.value));
+    setVariant(parseInt(event.target.value))
   }
 
   const handleToastClose = () => {
@@ -91,7 +89,7 @@ const ItemDetail = () => {
                     <FormControlLabel
                       disableTypography
                       value={variant.size}
-                      control={<Radio />}
+                      control={<Radio sx={{ color: '#000000', '&.Mui-checked': { color: '#212121' } }} />}
                       label={
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -128,8 +126,8 @@ const ItemDetail = () => {
             </FormControl>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Card raised sx={{ flexShrink: 1 }}>
-                <Button variant='outlined' onClick={handleAddToWishlist} sx={{ borderColor: '#000000' }}>
-                  <WishlistIcon />
+                <Button variant='outlined' onClick={handleAddToWishlist} sx={{ borderColor: '#000000', '&:hover': { borderColor: '#212121' } }}>
+                  <WishlistIcon variant={state.wishlists.includes(item?.id) ? 'filled' : 'outlined'} />
                 </Button>
               </Card>
               <Card raised sx={{ flexGrow: 1 }} >

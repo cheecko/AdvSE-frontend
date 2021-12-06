@@ -38,6 +38,6 @@ const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GlobalReducer, {wishlists: wishlists, carts: carts})
 
   return <GlobalContext.Provider value={{ state, dispatch }}>{children}</GlobalContext.Provider>
-};
+}
 
 export { GlobalContext, GlobalContextProvider }
