@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { AppBar, Toolbar, Box, Typography, Badge } from '@mui/material'
+import { AppBar, Toolbar, Box, Typography, Badge, CardMedia } from '@mui/material'
 import { GlobalContext } from './../contexts/GlobalContext'
-import { WishlistIcon, CartIcon } from './../components/SvgIcon'
+import { WishlistIcon, CartIcon, MenuIcon } from './../components/SvgIcon'
 
 const Header = () => {
   const { state } = useContext(GlobalContext)
@@ -26,16 +26,23 @@ const Header = () => {
         </Toolbar>
       </AppBar>
       <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
-        <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ flexGrow: 1 }} />
-          {/* add our login here here */}
-          <Box sx={{ display: 'flex', gap: 2, paddingTop: 1 }}>
+        <Toolbar disableGutters variant='dense' sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <MenuIcon sx={{ display: { xs: 'flex', sm: 'none'} }} />
+          </Box>
+          <CardMedia
+            component='img'
+            alt='AdvSE Logo'
+            image='/static/advse-logo.jpg'
+            sx={{ maxWidth: { xs: '50%', sm: '33.333%', lg: '25%'}, flexGrow: 0 }}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 3, sm: 2}, paddingTop: 1, paddingRight: 1 }}>
             <Link to={{ pathname: '/' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
                 <Badge badgeContent={state.wishlists.length} color='error'>
                   <WishlistIcon />
                 </Badge>
-                <Typography variant='caption'>
+                <Typography variant='caption' sx={{ display: { xs: 'none', sm: 'block'} }}>
                   Wunschartikel
                 </Typography>
               </Box>
@@ -45,7 +52,7 @@ const Header = () => {
                 <Badge badgeContent={state.carts.totalQuantity} color='error'>
                   <CartIcon />
                 </Badge>
-                <Typography variant='caption'>
+                <Typography variant='caption' sx={{ display: { xs: 'none', sm: 'block'} }}>
                   Warenkorb
                 </Typography>
               </Box>
@@ -53,16 +60,16 @@ const Header = () => {
           </Box>
         </Toolbar>
       </AppBar>
-      <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
+      {/* <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
         <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
-          {/* add category list here */}
+          
         </Toolbar>
       </AppBar>
       <AppBar position='static' color='transparent' sx={{ boxShadow: 'none', padding: 2 }}>
         <Toolbar variant='dense' sx={{ justifyContent: 'space-between' }}>
-          {/* add search here */}
+          
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
     </Box>
   )
 }
