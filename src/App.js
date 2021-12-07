@@ -4,6 +4,7 @@ import { GlobalContextProvider } from './contexts/GlobalContext'
 import Home from './pages/Home'
 import ItemDetail from './pages/ItemDetail'
 import Cart from './pages/Cart'
+import Checkout from './pages/Checkout';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path='/home' component={Home} exact />
           <Route path='/items/:id' component={ItemDetail} />
           <Route path='/cart' component={Cart} />
+          <Route path='/checkout' component={Checkout} />
         </Switch>
       </BrowserRouter>
     </GlobalContextProvider>
