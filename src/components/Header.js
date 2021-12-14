@@ -30,12 +30,13 @@ const Header = () => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <MenuIcon sx={{ display: { xs: 'flex', sm: 'none'} }} />
           </Box>
-          <CardMedia
-            component='img'
-            alt='AdvSE Logo'
-            image='/static/advse-logo.jpg'
-            sx={{ maxWidth: { xs: '50%', sm: '33.333%', lg: '25%'}, flexGrow: 0 }}
-          />
+          <Link to={{ pathname: '/' }} style={{ color: 'inherit', textDecoration: 'unset', maxWidth: { xs: '50%', sm: '33.333%', lg: '25%'}, flexGrow: 0 }} >
+            <CardMedia
+              component='img'
+              alt='AdvSE Logo'
+              image='/static/advse-logo.jpg'
+            />
+          </Link>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 3, sm: 2}, paddingTop: 1, paddingRight: 1 }}>
             <Link to={{ pathname: '/' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
