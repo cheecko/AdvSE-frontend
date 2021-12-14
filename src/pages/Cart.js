@@ -91,14 +91,23 @@ const Cart = () => {
                           </Select>
                         </FormControl>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                          <Typography variant='subtitle2' sx={{ textDecoration: 'line-through', marginBottom: 0.5 }}>
-                            {item.variant.base_price} €
-                          </Typography>
-                          <Typography variant='subtitle1' sx={{ fontWeight: 600, color: '#C74E4D' }}>
-                            - {item.variant.discount_percentage}% | {item.variant.price} €
-                          </Typography>
+                          {item.variant.discount_percentage !== 0 &&
+                            <>
+                              <Typography variant='subtitle2' sx={{ textDecoration: 'line-through', marginBottom: 0.5 }}>
+                                {item.variant.original_price.toFixed(2)} €
+                              </Typography>
+                              <Typography variant='subtitle1' sx={{ fontWeight: 600, color: '#C74E4D' }}>
+                                - {item.variant.discount_percentage}% | {item.variant.price.toFixed(2)} €
+                              </Typography>
+                            </>
+                          }
+                          {item.variant.discount_percentage === 0 &&
+                            <Typography variant='subtitle1' sx={{ fontWeight: 600 }}>
+                              {item.variant.price.toFixed(2)} €
+                           </Typography>
+                          }
                           <Typography variant='caption' color='text.secondary'>
-                            {item.variant.base_price} € / {item.variant.base_size} ml
+                            {item.variant.base_price.toFixed(2)} € / {item.variant.base_size} ml
                           </Typography>
                         </Box>
                       </Box>

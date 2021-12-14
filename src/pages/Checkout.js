@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 import { Container, Grid, Button, Box, Card, CardContent, Typography, TextField, FormControl, FormControlLabel, FormHelperText, Select, MenuItem, Checkbox, Divider, CardMedia, RadioGroup, Radio } from '@mui/material'
 import { IoArrowBack } from 'react-icons/io5'
 import axios from 'axios'
+import { EMAIL_REGEX } from './../utils/constants'
 import { GlobalContext } from './../contexts/GlobalContext'
 import CheckoutHeader from './../components/CheckoutHeader'
+import Toast from './../components/Toast'
 
 const Checkout = () => {
-  const { state, dispatch } = useContext(GlobalContext)
+  const { state } = useContext(GlobalContext)
+  const [toastMessage, setToastMessage] = useState('')
   const [email, setEmail] = useState('')
   const [useShippingAddress, setUseShippingAddress] = useState(true)
   const [editShippingAddress, setEditShippingAddress] = useState(true)
@@ -19,13 +22,36 @@ const Checkout = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('')
 
   const handleCreateOrder = () => {
-    const payload = {
-      // table order, order_item, invoice_address, shipping_address, customer
+    if (email === '' || !EMAIL_REGEX.test(email)) {
+      setToastMessage('Bitte fülle die richtige Email aus')
+      return
     }
+    if (!shippingAddress) {
+      setToastMessage('Bitte fülle die Lieferadresse aus')
+      return
+    }
+    if (!useShippingAddress && !invoiceAddress) {
+      setToastMessage('Bitte fülle die Rechnungsadresse aus')
+      return
+    }
+    if (selectedPaymentMethod === '') {
+      setToastMessage('Bitte wähle eine Zahlungsart aus')
+      return
+    }
+
+    const payload = {
+      email: email,
+      order: state.carts,
+      shippingAddress: shippingAddress,
+      invoiceAddress: useShippingAddress ? shippingAddress : invoiceAddress,
+      paymentMethod: selectedPaymentMethod
+    }
+
+    console.log(payload)
   }
 
   const handleChangePaymentMethod = (event) => {
-    setSelectedPaymentMethod(event.target.value)
+    setSelectedPaymentMethod(parseInt(event.target.value))
   }
   
   const handleChangeUserShippingAddress = (event) => {
@@ -59,6 +85,10 @@ const Checkout = () => {
     setEmail(event.target.value)
   }
 
+  const handleToastClose = () => {
+    setToastMessage('')
+  }
+
   useEffect(() => {
     axios.get('http://localhost:5000/api/v1/payments/methods').then(response => setPaymentMethods(response.data))
   }, [])
@@ -84,7 +114,11 @@ const Checkout = () => {
                 <Typography variant='subtitle1' sx={{ marginBottom: 0.5 }}>
                   Email
                 </Typography>
-                <TextField variant='outlined' fullWidth onChange={handleChangeEmail} />
+                <TextField
+                  variant='outlined'
+                  fullWidth
+                  onChange={handleChangeEmail}
+                />
               </CardContent>
             </Card>
             <Card raised sx={{ marginTop: 1, marginBottom: 1}}>
@@ -451,11 +485,11 @@ const Checkout = () => {
                 <Typography variant='subtitle1' sx={{ fontWeight: 600, marginBottom: 3 }}>
                   4. Zahlungsarten
                 </Typography>
-                <FormControl component='fieldset' sx={{ width: '100%', marginBottom: 1 }}>
+                <FormControl component='fieldset' fullWidth required >
                   <RadioGroup value={selectedPaymentMethod} onChange={handleChangePaymentMethod} sx={{ gap: 1 }}>
                     {paymentMethods.map((method, index) => (
                       <FormControlLabel
-                      key={index}
+                        key={index}
                         disableTypography
                         value={method.id}
                         control={<Radio sx={{ color: '#000000', '&.Mui-checked': { color: '#212121' } }} />}
@@ -516,7 +550,7 @@ const Checkout = () => {
                     Zwischensumme:
                   </Typography>
                   <Typography variant='subtitle1'>
-                    {state.carts.subtotal} €
+                    {state.carts.subtotal.toFixed(2)} €
                   </Typography>
                 </Box>
                 <Box sx={{ marginBottom: 1 }}>
@@ -525,7 +559,7 @@ const Checkout = () => {
                       Versandkosten:
                     </Typography>
                     <Typography variant='subtitle1' color='inherit'>
-                      {state.carts.shippingCost > 0 ? state.carts.shippingCost : 0.00} €
+                      {state.carts.shippingCost > 0 ? state.carts.shippingCost.toFixed(2) : 0.00} €
                     </Typography>
                   </Box>
                 </Box>
@@ -536,7 +570,7 @@ const Checkout = () => {
                       Gesamt:
                     </Typography>
                     <Typography variant='subtitle1' sx={{ fontWeight: 600 }}>
-                      {state.carts.total} €
+                      {state.carts.total.toFixed(2)} €
                     </Typography>
                   </Box>
                 </Box>
@@ -566,14 +600,23 @@ const Checkout = () => {
                             Menge: {item.quantity}
                           </Typography>
                           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                            <Typography variant='subtitle2' sx={{ textDecoration: 'line-through', marginBottom: 0.5 }}>
-                              {item.variant.base_price} €
+                            {item.variant.discount_percentage !== 0 &&
+                              <>
+                                <Typography variant='subtitle2' sx={{ textDecoration: 'line-through', marginBottom: 0.5 }}>
+                                  {item.variant.original_price.toFixed(2)} €
+                                </Typography>
+                                <Typography variant='subtitle1' sx={{ fontWeight: 600, color: '#C74E4D' }}>
+                                  - {item.variant.discount_percentage}% | {item.variant.price.toFixed(2)} €
+                                </Typography>
+                              </>
+                            }
+                            {item.variant.discount_percentage === 0 &&
+                              <Typography variant='subtitle1' sx={{ fontWeight: 600 }}>
+                                {item.variant.price.toFixed(2)} €
                             </Typography>
-                            <Typography variant='subtitle2' sx={{ fontWeight: 600, color: '#C74E4D' }}>
-                              - {item.variant.discount_percentage}% | {item.variant.price} €
-                            </Typography>
+                            }
                             <Typography variant='caption' color='text.secondary'>
-                              {item.variant.base_price} € / {item.variant.base_size} ml
+                              {item.variant.base_price.toFixed(2)} € / {item.variant.base_size} ml
                             </Typography>
                           </Box>
                         </Box>
@@ -586,6 +629,7 @@ const Checkout = () => {
           </Grid>
         </Grid>
       </Container>
+      <Toast message={toastMessage} type='error' handleToastClose={handleToastClose} />
     </>
   )
 }

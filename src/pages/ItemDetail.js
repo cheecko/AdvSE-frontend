@@ -89,32 +89,40 @@ const ItemDetail = () => {
                     <FormControlLabel
                       disableTypography
                       value={variant.size}
+                      disabled={variant.stock <= 0}
                       control={<Radio sx={{ color: '#000000', '&.Mui-checked': { color: '#212121' } }} />}
                       label={
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant='subtitle1'>
                               {variant.size} ml
                             </Typography>
                             <Typography variant='caption' color='text.secondary'>
-                              {variant.base_price} € / 100 ml
+                              {variant.base_price.toFixed(2)} € / 100 ml
                             </Typography>
                           </Box>
-                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                            <Typography variant='subtitle1' sx={{ color: variant.discount_percentage > 0 ? '#C74E4D' : 'inherit' }}>
-                              {variant.price} €
+                          {variant.stock <= 0 &&
+                            <Typography variant='h6' sx={{ fontWeight: 600, color: '#C74E4D' }}>
+                              Ausverkauft
                             </Typography>
-                            <Box sx={{ display:'flex', gap: 0.5 }}>
-                              <Typography variant='caption' component='div' sx={{ color: '#C74E4D' }}>
-                                - {variant.discount_percentage}%
-                              </Typography>
-                              <Typography variant='caption' component='div'>
-                                |
-                              </Typography>
-                              <Typography variant='caption' component='div' color='text.secondary' sx={{ textDecoration: 'line-through' }}>
-                                {variant.original_price} €
-                              </Typography>
-                            </Box>
+                          }
+                          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                            <Typography variant='subtitle1' sx={{ fontWeight: 600, color: variant.discount_percentage > 0 ? '#C74E4D' : 'inherit' }}>
+                              {variant.price.toFixed(2)} €
+                            </Typography>
+                            {variant.discount_percentage !== 0 &&
+                              <Box sx={{ display:'flex', gap: 0.5 }}>
+                                <Typography variant='caption' component='div' sx={{ color: '#C74E4D' }}>
+                                  - {variant.discount_percentage}%
+                                </Typography>
+                                <Typography variant='caption' component='div'>
+                                  |
+                                </Typography>
+                                <Typography variant='caption' component='div' color='text.secondary' sx={{ textDecoration: 'line-through' }}>
+                                  {variant.original_price.toFixed(2)} €
+                                </Typography>
+                              </Box>
+                            }
                           </Box>
                         </Box>
                       }
@@ -137,12 +145,16 @@ const ItemDetail = () => {
           </Grid>
         </Grid>
         <Grid container spacing={1} sx={{ marginBottom: 2 }}>
-          <Grid item xs={12} sm={6}>
-            <SimpleAccordion summary='Produkdetails' detail={item?.description} sx={{ flexGrow: 0 }} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <SimpleAccordion summary='Anwendung' detail={item?.instruction} sx={{ flexGrow: 1 }} />
-          </Grid>
+          {item?.description &&
+            <Grid item xs={12} sm={6}>
+              <SimpleAccordion summary='Produkdetails' detail={item?.description} sx={{ flexGrow: 0 }} />
+            </Grid>
+          }
+          {item?.instruction &&
+            <Grid item xs={12} sm={6}>
+              <SimpleAccordion summary='Anwendung' detail={item?.instruction} sx={{ flexGrow: 1 }} />
+            </Grid>
+          }
         </Grid>
       </Container>
       <Toast message={toastMessage} type={toastType} handleToastClose={handleToastClose} />
