@@ -12,7 +12,7 @@ const SimpleAccordion = ({ summary, detail }) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography sx={{ textAlign: 'justify' }}>
+          <Typography sx={{ textAlign: 'justify', whiteSpace: 'pre-wrap' }}>
             {detail}
           </Typography>
         </AccordionDetails>
