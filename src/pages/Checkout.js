@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Container, Grid, Button, Box, Card, CardContent, Typography, TextField, FormControl, FormControlLabel, FormHelperText, Select, MenuItem, Checkbox, Divider, CardMedia, RadioGroup, Radio } from '@mui/material'
 import { IoArrowBack } from 'react-icons/io5'
 import axios from 'axios'
-import { EMAIL_REGEX } from './../utils/constants'
+import { BACKEND_DOMAIN, EMAIL_REGEX } from './../utils/constants'
 import { GlobalContext } from './../contexts/GlobalContext'
 import CheckoutHeader from './../components/CheckoutHeader'
 import Toast from './../components/Toast'
@@ -48,6 +48,7 @@ const Checkout = () => {
     }
 
     console.log(payload)
+    axios.post(`${BACKEND_DOMAIN}/api/v1/orders`, payload).then(response => console.log(response.data))
   }
 
   const handleChangePaymentMethod = (event) => {
@@ -90,7 +91,7 @@ const Checkout = () => {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/v1/payments/methods').then(response => setPaymentMethods(response.data))
+    axios.get(`${BACKEND_DOMAIN}/api/v1/payments/methods`).then(response => setPaymentMethods(response.data))
   }, [])
 
   return (

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { Container, Box, Grid, Typography, FormControl, Select, MenuItem } from '@mui/material'
 import axios from 'axios'
+import { BACKEND_DOMAIN } from './../utils/constants'
 import { GlobalContext } from './../contexts/GlobalContext'
 import Header from './../components/Header'
 import ProductCard from './../components/ProductCard'
@@ -23,7 +24,7 @@ const Home = () => {
 
   useEffect(() => {
     const params = { sort: sort }
-    axios.get('http://localhost:5000/api/v1/items/', { params: params }).then(response => setItems(response.data))
+    axios.get(`${BACKEND_DOMAIN}/api/v1/items/`, { params: params }).then(response => setItems(response.data))
   }, [sort])
 
   console.log(items)

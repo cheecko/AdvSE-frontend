@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Container, Card, CardMedia, Box, Grid, Typography, FormControl, FormControlLabel, RadioGroup, Radio, Button  } from '@mui/material'
 import axios from 'axios'
-import { MAX_ORDER_QUANTITY_PER_ITEM } from './../utils/constants'
+import { BACKEND_DOMAIN, MAX_ORDER_QUANTITY_PER_ITEM } from './../utils/constants'
 import { GlobalContext } from './../contexts/GlobalContext'
 import { WishlistIcon } from './../components/SvgIcon'
 import Header from './../components/Header'
@@ -50,7 +50,7 @@ const ItemDetail = () => {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/v1/items/${id}`).then(response => {
+    axios.get(`${BACKEND_DOMAIN}/api/v1/items/${id}`).then(response => {
       setItem(response.data)
       setVariant(response.data.variants[0]?.size ?? '')
     })

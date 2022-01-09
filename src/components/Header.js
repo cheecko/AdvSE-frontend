@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Box, Typography, Badge, CardMedia } from '@mui/material'
 import { GlobalContext } from './../contexts/GlobalContext'
-import { WishlistIcon, CartIcon, MenuIcon } from './../components/SvgIcon'
+import { WishlistIcon, CartIcon, OrderIcon, MenuIcon } from './../components/SvgIcon'
 
 const Header = () => {
   const { state } = useContext(GlobalContext)
@@ -38,7 +38,15 @@ const Header = () => {
             />
           </Link>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 3, sm: 2}, paddingTop: 1, paddingRight: 1 }}>
-            <Link to={{ pathname: '/' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
+            <Link to={{ pathname: '/account/order' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                <OrderIcon />
+                <Typography variant='caption' sx={{ display: { xs: 'none', sm: 'block'} }}>
+                  Bestellungen
+                </Typography>
+              </Box>
+            </Link>
+            <Link to={{ pathname: '/account/wishlist' }} style={{ color: 'inherit', textDecoration: 'unset' }} >
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
                 <Badge badgeContent={state.wishlists.length} color='error'>
                   <WishlistIcon />
