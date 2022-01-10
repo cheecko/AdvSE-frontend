@@ -1,4 +1,4 @@
-export const BACKEND_DOMAIN = 'http://localhost:5000'
+export const BACKEND_DOMAIN = 'http://34.76.185.185:5000'
 
 export const MAX_ORDER_QUANTITY_PER_ITEM = 3
 export const FREE_DELIVERY_SUBTOTAL_PRICE = 19
