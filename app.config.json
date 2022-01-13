@@ -1,0 +1,9 @@
+{
+  "apps" : [
+    {
+      "name": "your-app",
+      "interpreter": "none",
+      "args": "serve -p 3000 -T"
+    }
+  ]
+}
